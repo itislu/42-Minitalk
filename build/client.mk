@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    minitalk.mk                                        :+:      :+:    :+:    #
+#    client.mk                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/28 15:25:52 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/29 16:57:33 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,17 @@ DEPS	:=
 DIR		:=	./
 
 # Source files:
-#  Main:
-SUBDIR	:=	./
+#  Client:
+SUBDIR	:=	./client
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
+			check_input.c \
 			client.c \
-			server.c \
+)
+
+#  Shared:
+SUBDIR	:=	./shared
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
+			send_message.c \
 )
 
 

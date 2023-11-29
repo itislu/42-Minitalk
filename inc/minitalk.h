@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/28 22:50:38 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:10:53 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include "ft_printf.h"
 # include <signal.h>
 # include <sys/types.h>
+
+# ifndef MAX_PID
+#  define MAX_PID 4194304
+# endif
 
 /* Structs */
 typedef struct s_stacks

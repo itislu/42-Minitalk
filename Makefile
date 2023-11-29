@@ -6,14 +6,15 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/28 15:25:48 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/29 17:20:46 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 # ***************************** CONFIGURATION ******************************** #
 
-NAME			:=	minitalk
+NAME			:=	server
+CLIENT			:=	client
 
 # Header files directories:
 I				:=	inc/ libft/inc/
@@ -32,7 +33,8 @@ S				:=	src/
 
 # Makefiles in build/ directory with source file listings to be included
 # (files that are dependent on others need to be below their dependency):
-SOURCELISTS		:=	minitalk.mk \
+SOURCELISTS		:=	client.mk \
+					server.mk \
 
 # Flags:
 CC				:=	cc
@@ -49,7 +51,9 @@ include				$(addprefix $B,$(SOURCELISTS))
 SRC				:=	$(foreach name,$(basename $(SOURCELISTS)),$(SRC_$(name)))
 
 DEP				:=	$(SRC:%.c=$D%.d)
-OBJ				:=	$(SRC:%.c=$O%.o)
+OBJ_CLIENT		:=	$(SRC_client:%.c=$O%.o)
+OBJ_SERVER		:=	$(SRC_server:%.c=$O%.o)
+OBJ				:=	$(OBJ_SERVER) $(OBJ_CLIENT)
 SUBDIRS_D		:=	$(sort $(dir $(DEP)))
 SUBDIRS_O		:=	$(sort $(dir $(OBJ)))
 
@@ -66,7 +70,7 @@ all				:	fclean lib $(NAME)
 	@				echo "Last target was debug, so recompiled everything."
     endif
 else
-all				:	lib $(NAME)
+all				:	$(NAME) $(CLIENT)
 endif
 
 bonus			:	all
@@ -74,9 +78,13 @@ bonus			:	all
 lib				:
 	@				make -C $L --no-print-directory
 
-$(NAME)			:	$L $(OBJ)
-					$(CC) $(CFLAGS) $(OBJ) $(addprefix -L,$L) \
-					$(addprefix -l,$l) -o $(NAME)
+$(NAME)			:	lib $L $(OBJ_SERVER)
+					$(CC) $(CFLAGS) $(OBJ_SERVER) $(addprefix -L,$L) \
+					$(addprefix -l,$l) -o $@
+
+client%	$(CLIENT):	lib $L $(OBJ_CLIENT)
+					$(CC) $(CFLAGS) $(OBJ_CLIENT) $(addprefix -L,$L) \
+					$(addprefix -l,$l) -o $@
 
 $(OBJ):	$O%.o	:	$S%.c | $(SUBDIRS_O)
 					$(CC) $(CFLAGS) -c $< -o $@

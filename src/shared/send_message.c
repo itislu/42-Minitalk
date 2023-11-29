@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_input.c                                      :+:      :+:    :+:   */
+/*   send_message.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 23:06:11 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/29 09:28:40 by ldulling         ###   ########.fr       */
+/*   Created: 2023/11/29 13:27:14 by ldulling          #+#    #+#             */
+/*   Updated: 2023/11/29 13:34:00 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include <minitalk.h>
 
-int	check_input(int argc, char *argv[])
+void	send_msg(pid_t pid, char *msg)
 {
-	if (argc < 2)
-		ft_printf("Enter a server PID.\n");
-	else if (argc > 3)
-		ft_printf("Invalid number of arguments.\n");
-	else
+	unsigned char	c;
+	int				i;
+
+	while (*msg)
 	{
-		if (ft_strisdigits(argv[1]))
-			return (1);
-		else if (argc == 3 && ft_strisdigits(argv[2]))
-			return (2);
-		else
-			ft_printf("One argument has to be a PID.");
+		c = *msg;
+		i = 0;
+		while (i++ < 8)
+		{
+			if (c & 0b1)
+				kill(pid, SIGUSR1);
+			else
+				kill(pid, SIGUSR2);
+			c >>= 1;
+		}
+		msg++;
 	}
-	return (-1);
 }
