@@ -6,37 +6,35 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:27:14 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/30 00:17:48 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:17:31 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minitalk.h>
 
-void	send_msg(pid_t pid, char *msg)
+void	display_msg_test(int sig)
 {
-	unsigned char	c;
-	int				i;
+	static unsigned char	c;
+	static int				i;
+	static	int				bytes;
 
-	ft_printf("pid: %d\n", pid);
-	while (*msg)
+	if (sig == 1)
 	{
-		c = *msg;
-		i = 0;
-		while (i++ < 8)
-		{
-			if (c & 0b10000000)
-			{
-				kill(pid, SIGUSR1);
-				ft_printf("1: %d\n", i);
-			}
-			else
-			{
-				kill(pid, SIGUSR2);
-				ft_printf("0: %d\n", i);
-			}
-			c <<= 1;
-			usleep(50);
-		}
-		msg++;
+		c += 0b1;
 	}
+	else if (sig == 0)
+	{
+		c += 0b0;
+	}
+	if (++i == 8)
+	{
+		++bytes;
+		ft_printf("%d\n", bytes);
+		//write(1, &c, 1);
+		c = 0;
+		i = 0;
+	}
+	else
+		c <<= 1;
 }
+

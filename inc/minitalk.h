@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/29 16:10:53 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:18:22 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ typedef struct s_stacks
 
 /* Functions */
 
+/* Debugging */
+void	display_msg_test(int sig);
 
 #endif
