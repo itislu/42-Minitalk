@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/30 23:16:15 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/30 23:17:00 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef SERVER_H
+# define SERVER_H
 
-# include "libft.h"
-# include "ft_printf.h"
-# include <errno.h>
-# include <signal.h>
-# include <sys/types.h>
+# include "minitalk.h"
 
-# ifndef MAX_PID
-#  define MAX_PID 4194304
-# endif
-# define SUCCESS 0
-# define ARG_ERROR 1
-# define HANDSHAKE_ERROR 2
-# define SIGEMPTYSET_ERROR 3
-# define SIGACTION_ERROR 4
-# define KILL_ERROR 5
-# define USLEEP_ERROR 6
-# define PAUSE_ERROR 7
+/* Server */
+void	handle_signal(int signo, siginfo_t *info, void *context);
+bool	display_msg(int signo, siginfo_t *info);
+
+/* Handshake */
+void	handshake(siginfo_t *info);
 
 #endif

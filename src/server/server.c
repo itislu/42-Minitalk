@@ -6,17 +6,13 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:25 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/30 19:55:35 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/30 23:17:34 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
-#include <signal.h>
+#include "server.h"
 
-void	handle_signal(int sig, siginfo_t *siginfo, void *context);
-void	display_msg(int sig, siginfo_t *siginfo);
-
-volatile sig_atomic_t	is_handshake_success[MAX_PID] = {false};
+volatile sig_atomic_t	g_is_handshake_success[MAX_PID] = {false};
 
 int	main(void)
 {
@@ -27,79 +23,59 @@ int	main(void)
 	ft_printf("The server PID is: %d\n", pid_server);
 	sa.sa_sigaction = handle_signal;
 	sa.sa_flags = SA_SIGINFO;
-	sigemptyset(&sa.sa_mask);
-
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	if (sigemptyset(&sa.sa_mask) == -1)
+		exit (SIGEMPTYSET_ERROR);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+		exit (SIGACTION_ERROR);
+	if (sigaction(SIGUSR2, &sa, NULL) == -1)
+		exit (SIGACTION_ERROR);
 	while (true)
-	{
-		//ft_printf("pausing\n");
-		pause();
-		//ft_printf("going out of pause\n");
-	}
+		if (pause() == -1 && errno != EINTR)
+			exit (PAUSE_ERROR);
 }
 
-void	handle_signal(int sig, siginfo_t *siginfo, void *context)
+void	handle_signal(int signo, siginfo_t *info, void *context)
 {
-	if (is_handshake_success[siginfo->si_pid] == false)
+	if (g_is_handshake_success[info->si_pid] == false)
 	{
-		if (sig == SIGUSR1)
+		if (signo == SIGUSR1)
 		{
-			is_handshake_success[siginfo->si_pid] = true;
-			usleep(100);
-			kill(siginfo->si_pid, SIGUSR1);
-			ft_printf("handshake successful\n");
-			usleep(100);
-			kill(siginfo->si_pid, SIGUSR2);
+			handshake(info);
+			if (kill(info->si_pid, SIGUSR2) == -1)
+				exit (KILL_ERROR);
 		}
 	}
 	else
 	{
-		display_msg(sig, siginfo);
-		// usleep(10000);
-		kill(siginfo->si_pid, SIGUSR2);
-		//ft_printf("sent SIGUSR2\n");
+		if (display_msg(signo, info))
+			if (kill(info->si_pid, SIGUSR2) == -1)
+				exit (KILL_ERROR);
 	}
 }
 
-void	display_msg(int sig, siginfo_t *siginfo)
+bool	display_msg(int signo, siginfo_t *info)
 {
 	static unsigned char	c[MAX_PID];
 	static int				i[MAX_PID];
-	static	int				bytes;
 
-	if (sig == SIGUSR1 || sig == SIGUSR2)
+	if (signo == SIGUSR1 || signo == SIGUSR2)
 	{
-		if (sig == SIGUSR1)
+		if (signo == SIGUSR1)
+			c[info->si_pid] += 0b1;
+		else if (signo == SIGUSR2)
+			c[info->si_pid] += 0b0;
+		if (++i[info->si_pid] == 8)
 		{
-			c[siginfo->si_pid] += 0b1;
-		}
-		else if (sig == SIGUSR2)
-		{
-			c[siginfo->si_pid] += 0b0;
-		}
-		if (++i[siginfo->si_pid] == 8)
-		{
-			write(1, &c[siginfo->si_pid], 1);
-			++bytes;
-			// ft_printf("%d\n", bytes);
-			c[siginfo->si_pid] = 0;
-			i[siginfo->si_pid] = 0;
+			write(1, &c[info->si_pid], 1);
+			c[info->si_pid] = 0;
+			i[info->si_pid] = 0;
 		}
 		else
-		{
-			c[siginfo->si_pid] <<= 1;
-			//ft_printf("received bit #%d\n", i);
-		}
-
+			if (kill(info->si_pid, SIGUSR2) == -1)
+				exit (KILL_ERROR);
+		c[info->si_pid] <<= 1;
+		return (true);
 	}
-}
-
-// Not used atm
-void	reset_sigusr1(struct sigaction *sa)
-{
-	sa->sa_handler = SIG_DFL;
-	sa->sa_flags = 0;
-	sigemptyset(&sa->sa_mask);
-	sigaction(SIGUSR1, sa, NULL);
+	else
+		return (false);
 }

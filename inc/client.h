@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   send_message.c                                     :+:      :+:    :+:   */
+/*   client.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 13:27:14 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/30 13:17:31 by ldulling         ###   ########.fr       */
+/*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
+/*   Updated: 2023/11/30 23:17:05 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minitalk.h>
+#ifndef CLIENT_H
+# define CLIENT_H
 
-void	display_msg_test(int sig)
-{
-	static unsigned char	c;
-	static int				i;
-	static	int				bytes;
+# include "minitalk.h"
 
-	if (sig == 1)
-	{
-		c += 0b1;
-	}
-	else if (sig == 0)
-	{
-		c += 0b0;
-	}
-	if (++i == 8)
-	{
-		++bytes;
-		ft_printf("%d\n", bytes);
-		//write(1, &c, 1);
-		c = 0;
-		i = 0;
-	}
-	else
-		c <<= 1;
-}
+/* Client */
+void	wait_until_server_allows_send_msg(void);
+void	send_msg(int signo, siginfo_t *info, void *context);
 
+/* Input check */
+int		check_input(int argc, char *argv[]);
+
+/* Handshake */
+void	handle_handshake(int signo);
+bool	handshake(pid_t pid_server);
+void	reset_sigusr1(struct sigaction *sa);
+
+#endif

@@ -6,11 +6,11 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 23:06:11 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/29 09:28:40 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/30 23:18:55 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "client.h"
 
 int	check_input(int argc, char *argv[])
 {
