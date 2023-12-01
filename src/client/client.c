@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:22 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/30 23:17:29 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:14:45 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,13 @@ int	main(int argc, char *argv[])
 	g_msg = argv[argno_msg];
 	pid_server = ft_atoi(argv[argno_pid]);
 	if (!handshake(pid_server))
+	{
+		if (argc > 2)
+			ft_printf("Handshake with server was not successful.\n");
+		else
+			ft_printf("No message to transmit.\n");
 		exit (HANDSHAKE_ERROR);
+	}
 	wait_until_server_allows_send_msg();
 }
 
@@ -54,13 +60,26 @@ void	send_msg(int signo, siginfo_t *info, void *context)
 	if (i == 8)
 	{
 		g_msg++;
-		i = 0;
+		if (*g_msg)
+			i = 0;
 	}
 	if (g_msg && *g_msg)
+		transmit_bit(&c, &i, info);
+	else
 	{
-		if (i == 0)
-			c = *g_msg;
-		if (c & 0b10000000)
+		if (i != 0)
+			ft_printf("Message transmitted successfully.\n");
+		else
+			ft_printf("Message was empty, no need to transmit.\n");
+		exit (SUCCESS);
+	}
+}
+
+void	transmit_bit(unsigned char *c, int *i, siginfo_t *info)
+{
+		if (*i == 0)
+			*c = *g_msg;
+		if (*c & 0b10000000)
 		{
 			if (kill(info->si_pid, SIGUSR1) == -1)
 				exit (KILL_ERROR);
@@ -68,9 +87,6 @@ void	send_msg(int signo, siginfo_t *info, void *context)
 		else
 			if (kill(info->si_pid, SIGUSR2) == -1)
 				exit (KILL_ERROR);
-		c <<= 1;
-		i++;
-	}
-	else
-		exit (SUCCESS);
+		*c <<= 1;
+		(*i)++;
 }
