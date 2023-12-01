@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/29 17:20:46 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/01 18:50:05 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,7 @@ all				:	fclean lib $(NAME)
 	@				echo "Last target was debug, so recompiled everything."
     endif
 else
-all				:	$(NAME) $(CLIENT)
+all				:	lib $(NAME) $(CLIENT)
 endif
 
 bonus			:	all
@@ -78,11 +78,15 @@ bonus			:	all
 lib				:
 	@				make -C $L --no-print-directory
 
-$(NAME)			:	lib $L $(OBJ_SERVER)
+$(NAME)			:	$L $(OBJ_SERVER) | lib
 					$(CC) $(CFLAGS) $(OBJ_SERVER) $(addprefix -L,$L) \
 					$(addprefix -l,$l) -o $@
 
-client%	$(CLIENT):	lib $L $(OBJ_CLIENT)
+$(CLIENT)		:	$L $(OBJ_CLIENT) | lib
+					$(CC) $(CFLAGS) $(OBJ_CLIENT) $(addprefix -L,$L) \
+					$(addprefix -l,$l) -o $(CLIENT)
+
+$(CLIENT)-%		:	$L $(OBJ_CLIENT) | lib
 					$(CC) $(CFLAGS) $(OBJ_CLIENT) $(addprefix -L,$L) \
 					$(addprefix -l,$l) -o $@
 
@@ -131,8 +135,8 @@ endif
 ifneq (,$(wildcard $B.previous_goal))
 					rm -f $B.previous_goal
 endif
-ifneq (,$(wildcard $(NAME)))
-					rm -f $(NAME)
+ifneq (,$(wildcard $(NAME) $(CLIENT)))
+					rm -f $(NAME) $(CLIENT)*
 endif
 
 re				:	fclean all

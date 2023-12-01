@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/29 16:47:03 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/30 23:22:34 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,9 @@ DIR		:=	./
 
 # Source files:
 #  Server:
-SUBDIR	:=	./server
+SUBDIR	:=	server/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
+			handshake_server.c \
 			server.c \
 )
 
