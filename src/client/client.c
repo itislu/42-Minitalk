@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:22 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/01 16:14:45 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:21:32 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ volatile char	*g_msg;
 
 int	main(int argc, char *argv[])
 {
-	int					argno_msg;
-	int					argno_pid;
-	pid_t				pid_server;
+	int		argno_msg;
+	int		argno_pid;
+	pid_t	pid_server;
 
 	argno_pid = check_input(argc, argv);
 	if (argno_pid == -1)
@@ -77,16 +77,16 @@ void	send_msg(int signo, siginfo_t *info, void *context)
 
 void	transmit_bit(unsigned char *c, int *i, siginfo_t *info)
 {
-		if (*i == 0)
-			*c = *g_msg;
-		if (*c & 0b10000000)
-		{
-			if (kill(info->si_pid, SIGUSR1) == -1)
-				exit (KILL_ERROR);
-		}
-		else
-			if (kill(info->si_pid, SIGUSR2) == -1)
-				exit (KILL_ERROR);
-		*c <<= 1;
-		(*i)++;
+	if (*i == 0)
+		*c = *g_msg;
+	if (*c & 0b10000000)
+	{
+		if (kill(info->si_pid, SIGUSR1) == -1)
+			exit (KILL_ERROR);
+	}
+	else
+		if (kill(info->si_pid, SIGUSR2) == -1)
+			exit (KILL_ERROR);
+	*c <<= 1;
+	(*i)++;
 }
