@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:25 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/30 23:17:34 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:40:18 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,24 @@ int	main(void)
 
 void	handle_signal(int signo, siginfo_t *info, void *context)
 {
-	if (g_is_handshake_success[info->si_pid] == false)
+	(void) context;
+	if (signo == SIGUSR1 || signo == SIGUSR2)
 	{
-		if (signo == SIGUSR1)
+		if (g_is_handshake_success[info->si_pid] == false)
 		{
-			handshake(info);
-			if (kill(info->si_pid, SIGUSR2) == -1)
-				exit (KILL_ERROR);
+			if (signo == SIGUSR1)
+			{
+				handshake(info);
+				if (kill(info->si_pid, SIGUSR2) == -1)
+					exit (KILL_ERROR);
+			}
 		}
-	}
-	else
-	{
-		if (display_msg(signo, info))
-			if (kill(info->si_pid, SIGUSR2) == -1)
-				exit (KILL_ERROR);
+		else
+		{
+			if (display_msg(signo, info))
+				if (kill(info->si_pid, SIGUSR2) == -1)
+					exit (KILL_ERROR);
+		}
 	}
 }
 

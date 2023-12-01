@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:22 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/01 16:21:32 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:31:31 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,25 @@ void	send_msg(int signo, siginfo_t *info, void *context)
 	static unsigned char	c;
 	static int				i;
 
-	if (i == 8)
+	(void) context;
+	if (signo == SIGUSR2)
 	{
-		g_msg++;
-		if (*g_msg)
-			i = 0;
-	}
-	if (g_msg && *g_msg)
-		transmit_bit(&c, &i, info);
-	else
-	{
-		if (i != 0)
-			ft_printf("Message transmitted successfully.\n");
+		if (i == 8)
+		{
+			g_msg++;
+			if (*g_msg)
+				i = 0;
+		}
+		if (g_msg && *g_msg)
+			transmit_bit(&c, &i, info);
 		else
-			ft_printf("Message was empty, no need to transmit.\n");
-		exit (SUCCESS);
+		{
+			if (i != 0)
+				ft_printf("Message transmitted successfully.\n");
+			else
+				ft_printf("Message was empty, no need to transmit.\n");
+			exit (SUCCESS);
+		}
 	}
 }
 
