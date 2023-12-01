@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 23:06:11 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/01 15:32:51 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:42:56 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ int	check_input(int argc, char *argv[])
 	{
 		if (ft_strisdigits(argv[1]))
 		{
-			if (kill(ft_atoi(argv[1]), 0) != -1)
+			if ((unsigned int) ft_atoi(argv[1]) <= MAX_PID)
 				return (1);
 			else if (argc == 3 && ft_strisdigits(argv[2]))
-				if (kill(ft_atoi(argv[2]), 0) != -1)
+				if ((unsigned int) ft_atoi(argv[2]) <= MAX_PID)
 					return (2);
 		}
 		else if (argc == 3 && ft_strisdigits(argv[2]))
-			if (kill(ft_atoi(argv[2]), 0) != -1)
+			if ((unsigned int) ft_atoi(argv[2]) <= MAX_PID)
 				return (2);
 		ft_printf("One argument has to be a valid PID.");
 	}
