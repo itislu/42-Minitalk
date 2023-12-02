@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:25 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/01 16:40:18 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 01:12:46 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ bool	display_msg(int signo, siginfo_t *info)
 			i[info->si_pid] = 0;
 		}
 		else
-			if (kill(info->si_pid, SIGUSR2) == -1)
-				exit (KILL_ERROR);
-		c[info->si_pid] <<= 1;
+			c[info->si_pid] <<= 1;
 		return (true);
 	}
 	else
