@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 22:40:21 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/01 16:12:01 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 01:54:45 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	handshake(pid_t pid_server)
 		exit (SIGACTION_ERROR);
 	if (kill(pid_server, SIGUSR1) == -1)
 	{
-		ft_printf("Could not reach a server under this PID.\n");
+		ft_printf("Could not reach a server with PID %d.\n", pid_server);
 		exit (KILL_ERROR);
 	}
 	if (pause() == -1 && errno != EINTR)
