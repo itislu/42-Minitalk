@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:22 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/01 16:31:31 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 01:57:48 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@ int	main(int argc, char *argv[])
 	if (!handshake(pid_server))
 	{
 		if (argc > 2)
+		{
 			ft_printf("Handshake with server was not successful.\n");
+			exit (HANDSHAKE_ERROR);
+		}
 		else
+		{
 			ft_printf("No message to transmit.\n");
-		exit (HANDSHAKE_ERROR);
+			exit (ARG_ERROR);
+		}
 	}
 	wait_until_server_allows_send_msg();
 }
