@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/01 16:05:22 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 01:49:51 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	transmit_bit(unsigned char *c, int *i, siginfo_t *info);
 
 /* Input check */
 int		check_input(int argc, char *argv[]);
+bool	is_valid_pid(char *arg);
 
 /* Handshake */
 void	handle_handshake(int signo);
