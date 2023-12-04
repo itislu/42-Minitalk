@@ -6,26 +6,26 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:27:12 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/04 12:06:05 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 20:16:30 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	print_nullptr(t_struct *f);
+static int	print_nullptr(t_format *f);
 static int	ptrlen(size_t ptr);
-static int	fullptrlen(int len_ptr, t_struct *f);
+static int	fullptrlen(int len_ptr, t_format *f);
 static int	puthex(size_t ptr);
 
-int	print_ptr(size_t ptr, t_struct *f)
+int	print_ptr(size_t ptr, t_format *f)
 {
 	int	len_ptr;
 	int	len_full;
 	int	printed;
 
-	if (!ptr)
-		return (print_nullptr(f));
 	printed = 0;
+	if (!ptr)
+		return (printed += print_nullptr(f));
 	len_ptr = ptrlen(ptr);
 	len_full = fullptrlen(len_ptr, f);
 	if (!f->minus && f->width > len_full && !(f->zero && f->precision < 0))
@@ -45,7 +45,7 @@ int	print_ptr(size_t ptr, t_struct *f)
 	return (printed);
 }
 
-static int	print_nullptr(t_struct *f)
+static int	print_nullptr(t_format *f)
 {
 	int	len;
 	int	printed;
@@ -73,7 +73,7 @@ static int	ptrlen(size_t ptr)
 	return (len_ptr);
 }
 
-static int	fullptrlen(int len_ptr, t_struct *f)
+static int	fullptrlen(int len_ptr, t_format *f)
 {
 	int	len_full;
 
