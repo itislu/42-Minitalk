@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/27 10:57:01 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/02 20:14:14 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,5 +112,5 @@ endif
 # *************************** MAKEFILE DEBUGGING ***************************** #
 
 # Prints the values of the variable given after the minus.
-print-%	:
-	@		echo $* = $($*)
+print-%			:
+	@				echo $* = $($*)
