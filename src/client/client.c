@@ -6,13 +6,13 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:22 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:24:14 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 13:39:32 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-volatile char	*;
+volatile int	g_stage = HANDSHAKE_STAGE;
 
 int	main(int argc, char *argv[])
 {
@@ -22,24 +22,58 @@ int	main(int argc, char *argv[])
 
 	parse_input(argc, argv, &msg, &pid_server);
 	save_in_static(msg, &send_msg);
-	if (!handshake(pid_server))
+	handshake(pid_server);
+	if (g_stage != GET_LEN_STAGE)
 	{
-		if (argc > 2)
-		{
-			ft_printf("Handshake with server was not successful.\n");
-			exit (HANDSHAKE_ERROR);
-		}
-		else
-		{
-			ft_printf("No message to transmit.\n");
-			exit (ARG_ERROR);
-		}
+		ft_printf("Handshake with server was not successful.\n");
+		exit (HANDSHAKE_ERROR);
 	}
 	len = communicate_len(pid_server, msg);
+	if (len == 0)
+	{
+		ft_printf("No message to transmit.\n");
+		exit (ARG_ERROR);
+	}
 	setup_sigaction(SIG_SERVER_READY, send_msg);
 	// Might need sth like this:
 	// lensize = send_lentype(len, pid_server);
 
-	wait_for_server(len);
+	wait_for_server(len, DISPLAY_MSG_STAGE);
+	if (g_stage != DISPLAY_MSG_STAGE)
+		timeout(pid_server, TIMEOUT_SEC);
 	exit (SUCCESS);
+}
+
+void	wait_for_server(size_t bytes_to_send, int next_stage)
+{
+	int					bytes_sent;
+	int					bits_sent;
+
+	bytes_sent = 0;
+	while (bytes_sent < bytes_to_send)
+	{
+		bits_sent = 0;
+		while (bits_sent < 8)
+		{
+			if (sleep(TIMEOUT_SEC) == 0)
+				return ;
+			bits_sent++;
+		}
+		bytes_sent++;
+	}
+	g_stage = next_stage;
+}
+
+void	transmit_bit(char *c, int *bit, pid_t pid_server)
+{
+	if (*c & 0b10000000)
+	{
+		if (kill(pid_server, SIG_ONE) == -1)
+			exit (KILL_ERROR);
+	}
+	else
+		if (kill(pid_server, SIG_ZERO) == -1)
+			exit (KILL_ERROR);
+	*c <<= 1;
+	(*bit)++;
 }

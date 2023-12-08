@@ -6,20 +6,20 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 11:47:01 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 01:32:12 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 11:50:20 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <server.h>
 
-int	get_len(size_t *len, int signo, pid_t pid)
+int	get_len(size_t *len, int signo, pid_t pid_client)
 {
 	static int	bit[MAX_PID];
 	static int	lensize[MAX_PID];
 
-	if (!lensize[pid])
+	if (!lensize[pid_client])
 	{
-		lensize[pid] = get_lentype(signo);
+		lensize[pid_client] = get_lentype(signo);
 	}
 	else
 	{
@@ -27,10 +27,10 @@ int	get_len(size_t *len, int signo, pid_t pid)
 			*len |= 0b1;
 		else
 			*len &= ~0b0;
-		if (++bit[pid] == lensize[pid])
+		if (++bit[pid_client] == lensize[pid_client])
 		{
-			bit[pid] = 0;
-			lensize[pid] = 0;
+			bit[pid_client] = 0;
+			lensize[pid_client] = 0;
 			usleep(100);	// Might be needed for client to switch handler to send_msg
 			return (BUFFER_MSG_STAGE);
 		}

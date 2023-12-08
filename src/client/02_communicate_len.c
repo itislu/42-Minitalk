@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:02:53 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:26:37 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:16:27 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ size_t	communicate_len(pid_t pid_server, char *msg)
 	int		lensize;
 
 	len = ft_strlen(msg);	// What if 0? Mallocing 0 bytes in server is not good.
-	save_in_static(len, &send_len);
+	if (len == 0)
+		return (len);
+	save_in_static((void *) len, &send_len);
 	setup_sigaction(SIG_SERVER_READY, send_len);
 	lensize = send_lentype(len, pid_server);
-	wait_for_server(lensize);
+	wait_for_server(lensize, BUFFER_MSG_STAGE);
+	if (g_stage != BUFFER_MSG_STAGE)
+		timeout(pid_server, TIMEOUT_SEC);
 	return (len);
 }
 

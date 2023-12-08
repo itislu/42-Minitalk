@@ -6,40 +6,34 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 22:40:21 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:25:41 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:15:45 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-bool	handshake(pid_t pid_server)
+void	handshake(pid_t pid_server)
 {
-	struct sigaction	sa;
+	int					sec_remaining;
 
-	sa.sa_handler = handle_handshake;
-	sa.sa_flags = SA_RESTART;
-	if (sigemptyset(&sa.sa_mask) == -1)
-		exit (SIGEMPTYSET_ERROR);
-	if (sigaction(SIG_HANDSHAKE, &sa, NULL) == -1)
-		exit (SIGACTION_ERROR);
+	setup_sigaction(SIG_HANDSHAKE, handle_handshake);
+	setup_sigaction(SIG_SERVER_ERROR, server_error);
 	if (kill(pid_server, SIG_HANDSHAKE) == -1)
 	{
 		ft_printf("Could not reach a server with PID %d.\n", pid_server);
 		exit (KILL_ERROR);
 	}
-	if (pause() == -1 && errno != EINTR)
-		exit (PAUSE_ERROR);
-	if (g_state != /* NEXT_STATE */)
-		exit ();
-	setup_sigaction(SIG_SERVER_ERROR, server_error);
-	// reset_sigusr1(&sa);
-	return (g_state);
+	sec_remaining = sleep(TIMEOUT_SEC);
+	if (g_stage != GET_LEN_STAGE && sec_remaining == 0)
+		timeout(pid_server, TIMEOUT_SEC);
 }
 
-void	handle_handshake(int signo)
+void	handle_handshake(int signo, siginfo_t *info, void *context)
 {
+	(void) info;
+	(void) context;
 	if (signo == SIG_HANDSHAKE)
-		g_state = /* NEXT_STATE */;
+		g_stage = GET_LEN_STAGE;
 }
 
 // void	reset_sigusr1(struct sigaction *sa)	//Change to indicate any kind of error or finish state from server to exit

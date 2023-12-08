@@ -15,11 +15,6 @@
 
 # include "minitalk.h"
 
-# define HANDSHAKE_STAGE 0
-# define GET_LEN_STAGE 1
-# define BUFFER_MSG_STAGE 2
-# define DISPLAY_MSG_STAGE 3
-
 extern volatile char	*g_msg[];
 
 /* Server */
@@ -33,11 +28,11 @@ void	set_bit(volatile char *byte, int signo);
 void	handshake(int signo, pid_t pid_client, int stage[]);
 
 /* 02 Get len stage */
-int		get_len(size_t *len, int signo, pid_t pid);
+int		get_len(size_t *len, int signo, pid_t pid_client);
 int		get_lentype(int signo);
 
 /* 03 Buffer msg stage */
-int		buffer_msg(size_t *len, int signo, pid_t pid);
+int		buffer_msg(size_t *len, int signo, pid_t pid_client);
 
 /* 04 Display msg stage */
 void	display_msg(volatile char **msg);

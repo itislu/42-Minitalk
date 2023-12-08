@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 02:18:54 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:24:19 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 11:30:00 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,9 @@ void	setup_sigaction(int signal, void (*handler)(int, siginfo_t *, void *))
 		exit (SIGACTION_ERROR);
 }
 
-void	transmit_bit(size_t *c, int *bit, pid_t pid)
+void	timeout(pid_t pid_server, int timeout_sec)
 {
-	if (*c & 0b10000000)
-	{
-		if (kill(pid, SIG_ONE) == -1)
-			exit (KILL_ERROR);
-	}
-	else
-		if (kill(pid, SIG_ZERO) == -1)
-			exit (KILL_ERROR);
-	*c <<= 1;
-	(*bit)++;
-}
-
-void	wait_for_server(size_t bytes_to_send)
-{
-	int					bytes_sent;
-	int					bits_sent;
-
-	bytes_sent = 0;
-	while (bytes_sent < bytes_to_send)
-	{
-		bits_sent = 0;
-		while (bits_sent < 8)
-		{
-			if (pause() == -1 && errno != EINTR)
-				exit (PAUSE_ERROR);
-			bits_sent++;
-		}
-		bytes_sent++;
-	}
+	ft_printf("Server with PID %d did not respond in %d seconds.\n",
+	pid_server, timeout_sec);
+	exit (TIMEOUT_ERROR);
 }

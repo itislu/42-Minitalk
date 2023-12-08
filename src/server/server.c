@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:25 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:22:43 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:11:37 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ void	handle_signal(int signo, siginfo_t *info, void *context)
 
 	(void) context;
 	if (stage[info->si_pid] == HANDSHAKE_STAGE)
-		return (handsshake(info, stage));
+		return (handshake(signo, info->si_pid, stage));
 	else if (stage[info->si_pid] == GET_LEN_STAGE)
 	{
 		stage[info->si_pid] = get_len(&len[info->si_pid], signo, info->si_pid);
 	}
 	else if (stage[info->si_pid] == BUFFER_MSG_STAGE)
 	{
-		stage[info->si_pid] = buffer_msg(len[info->si_pid], signo, info->si_pid);
+		stage[info->si_pid] = buffer_msg(&len[info->si_pid], signo, info->si_pid);
 		if (stage[info->si_pid] == DISPLAY_MSG_STAGE)
 		{
 			display_msg(&g_msg[info->si_pid]);

@@ -15,14 +15,19 @@
 
 # include "minitalk.h"
 
-extern volatile char	*;
+# define TIMEOUT_SEC	10
+
+extern volatile int	g_stage;
+
+/* Client */
+void	wait_for_server(size_t bytes_to_send, int next_stage);
+void	transmit_bit(char *c, int *bit, pid_t pid_server);
 
 /* Client utils */
 void	save_in_static(void *data, void (*func)(int, siginfo_t *, void *));
 void	server_error(int signo, siginfo_t *info, void *context);
 void	setup_sigaction(int signal, void (*handler)(int, siginfo_t *, void *));
-void	transmit_bit(size_t *c, int *bit, pid_t pid);
-void	wait_for_server(size_t bytes_to_send);
+void	timeout(pid_t pid_server, int timeout_sec);
 
 /* 00 Parse input */
 void	parse_input(int argc, char *argv[], char **msg, pid_t *pid_server);
