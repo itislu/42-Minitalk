@@ -17,7 +17,6 @@
 # include "ft_printf.h"
 # include <errno.h>
 # include <signal.h>
-# include <sys/siginfo.h>
 # include <sys/types.h>
 
 # ifndef MAX_PID

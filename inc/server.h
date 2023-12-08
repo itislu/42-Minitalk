@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:47:25 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:12:04 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@
 extern volatile char	*g_msg[];
 
 /* Server */
-void	handle_signal(int signo, siginfo_t *info, void *context)
+void	handle_signal(int signo, siginfo_t *info, void *context);
 
 /* Server utils */
 void	free_all_and_exit(int exit_code);
-void	set_bit(void *byte, int signo);
+void	set_bit(volatile char *byte, int signo);
 
 /* 01 Handshake stage */
-void	handshake(siginfo_t *info, int stage[]);
+void	handshake(int signo, pid_t pid_client, int stage[]);
 
 /* 02 Get len stage */
 int		get_len(size_t *len, int signo, pid_t pid);
@@ -40,6 +40,6 @@ int		get_lentype(int signo);
 int		buffer_msg(size_t *len, int signo, pid_t pid);
 
 /* 04 Display msg stage */
-void	display_msg(char **msg);
+void	display_msg(volatile char **msg);
 
 #endif

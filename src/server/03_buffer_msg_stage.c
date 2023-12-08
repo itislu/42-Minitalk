@@ -14,16 +14,16 @@
 
 int	buffer_msg(size_t *len, int signo, pid_t pid)
 {
-	static int	bit[MAX_PID];
-	static int	byte[MAX_PID];
+	static int		bit[MAX_PID];
+	static size_t	byte[MAX_PID];
 
 	if (!g_msg[pid])
 	{
 		g_msg[pid] = (char *) malloc(*len * sizeof(char));
 		if (!g_msg[pid])
-			free_all_and_exit(g_msg, MALLOC_ERROR);
+			free_all_and_exit(MALLOC_ERROR);
 	}
-	set_bit(&g_msg[pid][byte[pid]]);
+	set_bit(&g_msg[pid_client][byte[pid_client]], signo);
 	if (++bit[pid] == 8)
 	{
 		bit[pid] = 0;

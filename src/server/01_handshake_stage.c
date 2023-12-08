@@ -6,21 +6,21 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 23:04:57 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:27:45 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 11:43:03 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-void	handshake(siginfo_t *info, int stage[])
+void	handshake(int signo, pid_t pid_client, int stage[])
 {
 	if (signo == SIG_HANDSHAKE)
 	{
-		stage[info->si_pid] = GET_LEN_STAGE;
-		if (kill(info->si_pid, SIG_HANDSHAKE) == -1)
+		stage[pid_client] = GET_LEN_STAGE;
+		if (kill(pid_client, SIG_HANDSHAKE) == -1)
 			exit (KILL_ERROR);
 	}
 	else
-		if (kill(info->si_pid, SIG_HANDSHAKE_ERROR) == -1)
+		if (kill(pid_client, SIG_HANDSHAKE_ERROR) == -1)
 			exit (KILL_ERROR);
 }

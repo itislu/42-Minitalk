@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:49:26 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:20:56 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int		check_input(int argc, char *argv[]);
 bool	is_valid_pid(char *arg);
 
 /* 01 Handshake */
-bool	handshake(pid_t pid_server);
-void	handle_handshake(int signo);
+void	handshake(pid_t pid_server);
+void	handle_handshake(int signo, siginfo_t *info, void *context);
 
 /* 02 Communicate len */
 size_t	communicate_len(pid_t pid_server, char *msg);

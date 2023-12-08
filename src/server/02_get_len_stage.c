@@ -44,6 +44,6 @@ int	get_lentype(int signo)
 {
 	if (signo == SIG_INT)
 		return (sizeof(unsigned int));
-	else if (signo == SIG_LONG)
+	else
 		return (sizeof(size_t));
 }
