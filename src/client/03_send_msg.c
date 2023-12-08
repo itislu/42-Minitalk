@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 02:21:49 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 02:22:02 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 14:54:46 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	send_msg(int signo, siginfo_t *info, void *context)
 {
-	static unsigned char	c;
-	static int				bit;
-	static char				*msg;
+	static size_t	c;
+	static int		bit;
+	static char		*msg;
 
 	if (!signo && !msg)
 		msg = (char *) context;

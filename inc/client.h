@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 12:20:56 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 14:52:17 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ extern volatile int	g_stage;
 
 /* Client */
 void	wait_for_server(size_t bytes_to_send, int next_stage);
-void	transmit_bit(char *c, int *bit, pid_t pid_server);
+void	transmit_bit(size_t *c, int *bit, pid_t pid_server);
 
 /* Client utils */
 void	save_in_static(void *data, void (*func)(int, siginfo_t *, void *));
