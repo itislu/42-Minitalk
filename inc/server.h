@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 12:12:04 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 15:19:29 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	handle_signal(int signo, siginfo_t *info, void *context);
 
 /* Server utils */
 void	free_all_and_exit(int exit_code);
+pid_t	print_pid(void);
 void	set_bit(volatile char *byte, int signo);
 
 /* 01 Handshake stage */

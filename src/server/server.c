@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:25 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 12:11:37 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 15:19:35 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	main(void)
 	pid_t				pid_server;
 	struct sigaction	sa;
 
-	pid_server = getpid();
-	ft_printf("The server PID is: %d\n", pid_server);
+	pid_server = print_pid();
 	sa.sa_sigaction = handle_signal;
 	sa.sa_flags = SA_SIGINFO;
 	if (sigemptyset(&sa.sa_mask) == -1)
