@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 01:49:51 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 02:49:26 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,30 @@
 
 # include "minitalk.h"
 
-/* Client */
-void	wait_until_server_allows_send_msg(void);
-void	send_msg(int signo, siginfo_t *info, void *context);
-void	transmit_bit(unsigned char *c, int *i, siginfo_t *info);
+extern volatile char	*;
 
-/* Input check */
+/* Client utils */
+void	save_in_static(void *data, void (*func)(int, siginfo_t *, void *));
+void	server_error(int signo, siginfo_t *info, void *context);
+void	setup_sigaction(int signal, void (*handler)(int, siginfo_t *, void *));
+void	transmit_bit(size_t *c, int *bit, pid_t pid);
+void	wait_for_server(size_t bytes_to_send);
+
+/* 00 Parse input */
+void	parse_input(int argc, char *argv[], char **msg, pid_t *pid_server);
 int		check_input(int argc, char *argv[]);
 bool	is_valid_pid(char *arg);
 
-/* Handshake */
-void	handle_handshake(int signo);
+/* 01 Handshake */
 bool	handshake(pid_t pid_server);
-void	reset_sigusr1(struct sigaction *sa);
+void	handle_handshake(int signo);
+
+/* 02 Communicate len */
+size_t	communicate_len(pid_t pid_server, char *msg);
+int		send_lentype(size_t len, pid_t pid_server);
+void	send_len(int signo, siginfo_t *info, void *context);
+
+/* 03 Send msg */
+void	send_msg(int signo, siginfo_t *info, void *context);
 
 #endif

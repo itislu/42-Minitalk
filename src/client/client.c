@@ -6,26 +6,22 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:22 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 01:57:48 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 02:24:14 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-volatile char	*g_msg;
+volatile char	*;
 
 int	main(int argc, char *argv[])
 {
-	int		argno_msg;
-	int		argno_pid;
+	size_t	len;
+	char	*msg;
 	pid_t	pid_server;
 
-	argno_pid = check_input(argc, argv);
-	if (argno_pid == -1)
-		exit (ARG_ERROR);
-	argno_msg = argno_pid % 2 + 1;
-	g_msg = argv[argno_msg];
-	pid_server = ft_atoi(argv[argno_pid]);
+	parse_input(argc, argv, &msg, &pid_server);
+	save_in_static(msg, &send_msg);
 	if (!handshake(pid_server))
 	{
 		if (argc > 2)
@@ -39,63 +35,11 @@ int	main(int argc, char *argv[])
 			exit (ARG_ERROR);
 		}
 	}
-	wait_until_server_allows_send_msg();
-}
+	len = communicate_len(pid_server, msg);
+	setup_sigaction(SIG_SERVER_READY, send_msg);
+	// Might need sth like this:
+	// lensize = send_lentype(len, pid_server);
 
-void	wait_until_server_allows_send_msg(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_sigaction = send_msg;
-	sa.sa_flags = SA_SIGINFO | SA_RESTART;
-	if (sigemptyset(&sa.sa_mask) == -1)
-		exit (SIGEMPTYSET_ERROR);
-	if (sigaction(SIGUSR2, &sa, NULL) == -1)
-		exit (SIGACTION_ERROR);
-	while (true)
-		if (pause() == -1 && errno != EINTR)
-			exit (PAUSE_ERROR);
-}
-
-void	send_msg(int signo, siginfo_t *info, void *context)
-{
-	static unsigned char	c;
-	static int				i;
-
-	(void) context;
-	if (signo == SIGUSR2)
-	{
-		if (i == 8)
-		{
-			g_msg++;
-			if (*g_msg)
-				i = 0;
-		}
-		if (g_msg && *g_msg)
-			transmit_bit(&c, &i, info);
-		else
-		{
-			if (i != 0)
-				ft_printf("Message transmitted successfully.\n");
-			else
-				ft_printf("Message was empty, no need to transmit.\n");
-			exit (SUCCESS);
-		}
-	}
-}
-
-void	transmit_bit(unsigned char *c, int *i, siginfo_t *info)
-{
-	if (*i == 0)
-		*c = *g_msg;
-	if (*c & 0b10000000)
-	{
-		if (kill(info->si_pid, SIGUSR1) == -1)
-			exit (KILL_ERROR);
-	}
-	else
-		if (kill(info->si_pid, SIGUSR2) == -1)
-			exit (KILL_ERROR);
-	*c <<= 1;
-	(*i)++;
+	wait_for_server(len);
+	exit (SUCCESS);
 }

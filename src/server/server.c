@@ -6,13 +6,13 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:25 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 01:12:46 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 02:22:43 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-volatile sig_atomic_t	g_is_handshake_success[MAX_PID] = {false};
+volatile char	*g_msg[MAX_PID];
 
 int	main(void)
 {
@@ -24,60 +24,37 @@ int	main(void)
 	sa.sa_sigaction = handle_signal;
 	sa.sa_flags = SA_SIGINFO;
 	if (sigemptyset(&sa.sa_mask) == -1)
-		exit (SIGEMPTYSET_ERROR);
+		free_all_and_exit(SIGEMPTYSET_ERROR);
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
-		exit (SIGACTION_ERROR);
+		free_all_and_exit(SIGACTION_ERROR);
 	if (sigaction(SIGUSR2, &sa, NULL) == -1)
-		exit (SIGACTION_ERROR);
+		free_all_and_exit(SIGACTION_ERROR);
 	while (true)
 		if (pause() == -1 && errno != EINTR)
-			exit (PAUSE_ERROR);
+			free_all_and_exit(PAUSE_ERROR);
 }
 
 void	handle_signal(int signo, siginfo_t *info, void *context)
 {
+	static int		stage[MAX_PID] = {HANDSHAKE_STAGE};
+	static size_t	len[MAX_PID];
+
 	(void) context;
-	if (signo == SIGUSR1 || signo == SIGUSR2)
+	if (stage[info->si_pid] == HANDSHAKE_STAGE)
+		return (handsshake(info, stage));
+	else if (stage[info->si_pid] == GET_LEN_STAGE)
 	{
-		if (g_is_handshake_success[info->si_pid] == false)
+		stage[info->si_pid] = get_len(&len[info->si_pid], signo, info->si_pid);
+	}
+	else if (stage[info->si_pid] == BUFFER_MSG_STAGE)
+	{
+		stage[info->si_pid] = buffer_msg(len[info->si_pid], signo, info->si_pid);
+		if (stage[info->si_pid] == DISPLAY_MSG_STAGE)
 		{
-			if (signo == SIGUSR1)
-			{
-				handshake(info);
-				if (kill(info->si_pid, SIGUSR2) == -1)
-					exit (KILL_ERROR);
-			}
-		}
-		else
-		{
-			if (display_msg(signo, info))
-				if (kill(info->si_pid, SIGUSR2) == -1)
-					exit (KILL_ERROR);
+			display_msg(&g_msg[info->si_pid]);
+			stage[info->si_pid] = HANDSHAKE_STAGE;
 		}
 	}
-}
-
-bool	display_msg(int signo, siginfo_t *info)
-{
-	static unsigned char	c[MAX_PID];
-	static int				i[MAX_PID];
-
-	if (signo == SIGUSR1 || signo == SIGUSR2)
-	{
-		if (signo == SIGUSR1)
-			c[info->si_pid] += 0b1;
-		else if (signo == SIGUSR2)
-			c[info->si_pid] += 0b0;
-		if (++i[info->si_pid] == 8)
-		{
-			write(1, &c[info->si_pid], 1);
-			c[info->si_pid] = 0;
-			i[info->si_pid] = 0;
-		}
-		else
-			c[info->si_pid] <<= 1;
-		return (true);
-	}
-	else
-		return (false);
+	if (kill(info->si_pid, SIG_SERVER_READY) == -1)
+		free_all_and_exit(KILL_ERROR);
 }

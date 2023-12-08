@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handshake_client.c                                 :+:      :+:    :+:   */
+/*   01_handshake.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 22:40:21 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 01:54:45 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 02:25:41 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
-
-extern volatile char	*g_msg;
 
 bool	handshake(pid_t pid_server)
 {
@@ -22,31 +20,34 @@ bool	handshake(pid_t pid_server)
 	sa.sa_flags = SA_RESTART;
 	if (sigemptyset(&sa.sa_mask) == -1)
 		exit (SIGEMPTYSET_ERROR);
-	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+	if (sigaction(SIG_HANDSHAKE, &sa, NULL) == -1)
 		exit (SIGACTION_ERROR);
-	if (kill(pid_server, SIGUSR1) == -1)
+	if (kill(pid_server, SIG_HANDSHAKE) == -1)
 	{
 		ft_printf("Could not reach a server with PID %d.\n", pid_server);
 		exit (KILL_ERROR);
 	}
 	if (pause() == -1 && errno != EINTR)
 		exit (PAUSE_ERROR);
-	reset_sigusr1(&sa);
-	return (g_msg);
+	if (g_state != /* NEXT_STATE */)
+		exit ();
+	setup_sigaction(SIG_SERVER_ERROR, server_error);
+	// reset_sigusr1(&sa);
+	return (g_state);
 }
 
 void	handle_handshake(int signo)
 {
-	if (signo != SIGUSR1)
-		g_msg = NULL;
+	if (signo == SIG_HANDSHAKE)
+		g_state = /* NEXT_STATE */;
 }
 
-void	reset_sigusr1(struct sigaction *sa)
-{
-	sa->sa_handler = SIG_DFL;
-	sa->sa_flags = 0;
-	if (sigemptyset(&sa->sa_mask) == -1)
-		exit (SIGEMPTYSET_ERROR);
-	if (sigaction(SIGUSR1, sa, NULL) == -1)
-		exit (SIGACTION_ERROR);
-}
+// void	reset_sigusr1(struct sigaction *sa)	//Change to indicate any kind of error or finish state from server to exit
+// {
+// 	sa->sa_handler = exit;
+// 	sa->sa_flags = 0;
+// 	if (sigemptyset(&sa->sa_mask) == -1)
+// 		exit (SIGEMPTYSET_ERROR);
+// 	if (sigaction(SIG_EXIT, sa, NULL) == -1)
+// 		exit (SIGACTION_ERROR);
+// }
