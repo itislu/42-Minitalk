@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:22 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 14:55:15 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 15:46:02 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char *argv[])
 	parse_input(argc, argv, &msg, &pid_server);
 	save_in_static(msg, &send_msg);
 	handshake(pid_server);
-	if (g_stage != GET_LEN_STAGE)
+	if (g_stage != COMM_LEN_STAGE)
 	{
 		ft_printf("Handshake with server was not successful.\n");
 		exit (HANDSHAKE_ERROR);

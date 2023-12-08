@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   03_buffer_msg_stage.c                              :+:      :+:    :+:   */
+/*   03_buffer_msg.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:25:20 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 12:04:05 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 15:48:54 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	buffer_msg(size_t *len, int signo, pid_t pid_client)
 	}
 	else
 		g_msg[pid_client][byte[pid_client]] <<= 1;
-	return (BUFFER_MSG_STAGE);
+	return (TRANSMIT_MSG_STAGE);
 }
 
 /* Alternative */

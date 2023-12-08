@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/12/08 02:27:02 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/08 15:50:23 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ DIR		:=	./
 SUBDIR	:=	client/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			00_parse_input.c \
-			01_handshake.c \
+			01_handshake_client.c \
 			02_communicate_len.c \
 			03_send_msg.c \
 			client.c \

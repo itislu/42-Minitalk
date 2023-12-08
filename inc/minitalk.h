@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 13:45:27 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 15:47:56 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 /* COMMUNICATION STAGES */
 # define HANDSHAKE_STAGE		0
-# define GET_LEN_STAGE			1
-# define BUFFER_MSG_STAGE		2
+# define COMM_LEN_STAGE			1
+# define TRANSMIT_MSG_STAGE		2
 # define DISPLAY_MSG_STAGE		3
 
 /* SIGNALS */

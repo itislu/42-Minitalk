@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   01_handshake_stage.c                               :+:      :+:    :+:   */
+/*   04_display_msg.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/30 23:04:57 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 11:43:03 by ldulling         ###   ########.fr       */
+/*   Created: 2023/12/07 11:48:10 by ldulling          #+#    #+#             */
+/*   Updated: 2023/12/08 15:48:55 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include <server.h>
 
-void	handshake(int signo, pid_t pid_client, int stage[])
+void	display_msg(volatile char **msg)
 {
-	if (signo == SIG_HANDSHAKE)
-	{
-		stage[pid_client] = GET_LEN_STAGE;
-		if (kill(pid_client, SIG_HANDSHAKE) == -1)
-			exit (KILL_ERROR);
-	}
-	else
-		if (kill(pid_client, SIG_HANDSHAKE_ERROR) == -1)
-			exit (KILL_ERROR);
+	ft_printf("%s", *msg);
+	ft_free_and_null((void **) msg);
+	sleep(1);
+	print_pid();
 }

@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/12/07 12:18:44 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/08 15:50:46 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,10 @@ DIR		:=	./
 #  Server:
 SUBDIR	:=	server/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
-			01_handshake_stage.c \
-			02_get_len_stage.c \
-			03_buffer_msg_stage.c \
-			04_display_msg_stage.c \
+			01_handshake_server.c \
+			02_get_len.c \
+			03_buffer_msg.c \
+			04_display_msg.c \
 			server.c \
 			server_utils.c \
 )
