@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:39:22 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 13:39:32 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 14:55:15 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	main(int argc, char *argv[])
 
 void	wait_for_server(size_t bytes_to_send, int next_stage)
 {
-	int					bytes_sent;
-	int					bits_sent;
+	size_t	bytes_sent;
+	int		bits_sent;
 
 	bytes_sent = 0;
 	while (bytes_sent < bytes_to_send)

@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 02:18:54 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 11:30:00 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 14:57:18 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ void	save_in_static(void *data, void (*func)(int, siginfo_t *, void *))
 
 void	server_error(int signo, siginfo_t *info, void *context)
 {
+	(void) signo;
+	(void) info;
+	(void) context;
 	exit(SERVER_ERROR);
 }
 
@@ -26,7 +29,7 @@ void	setup_sigaction(int signal, void (*handler)(int, siginfo_t *, void *))
 {
 	struct sigaction	sa;
 
-	sa.sa_sigaction = &handler;
+	sa.sa_sigaction = handler;
 	sa.sa_flags = SA_SIGINFO | SA_RESTART;
 	if (sigemptyset(&sa.sa_mask) == -1)
 		exit (SIGEMPTYSET_ERROR);
