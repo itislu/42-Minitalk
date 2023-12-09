@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 16:45:38 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 04:29:47 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,20 @@
 
 /* COMMUNICATION STAGES */
 # define HANDSHAKE_STAGE		0
-# define TRANSMIT_LEN_STAGE		1
-# define TRANSMIT_MSG_STAGE		2
+# define LEN_TRANSMISSION_STAGE	1
+# define MSG_TRANSMISSION_STAGE	2
 # define DISPLAY_MSG_STAGE		3
 
 /* SIGNALS */
 # define SIG_HANDSHAKE			SIGUSR1
 # define SIG_HANDSHAKE_ERROR	SIGUSR2
 # define SIG_SERVER_READY		SIGUSR1
-# define SIG_SERVER_ERROR		SIGUSR2
-# ifndef SIG_INT
-#  define SIG_INT				SIGUSR1
+# define SIG_MSG_RECEIVED		SIGUSR2
+# ifndef SIG_UINT
+#  define SIG_UINT				SIGUSR1
 # endif
-# ifndef SIG_LONG
-#  define SIG_LONG				SIGUSR2
+# ifndef SIG_SIZE_T
+#  define SIG_SIZE_T			SIGUSR2
 # endif
 # ifndef SIG_ONE
 #  define SIG_ONE				SIGUSR1
@@ -57,7 +57,6 @@
 # define USLEEP_ERROR			6
 # define PAUSE_ERROR			7
 # define MALLOC_ERROR			8
-# define SERVER_ERROR			9
-# define TIMEOUT_ERROR			10
+# define TIMEOUT_ERROR			9
 
 #endif

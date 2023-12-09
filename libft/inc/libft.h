@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:17:46 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/07 03:12:37 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:32:53 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,9 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-// Adjusted for push_swap
 typedef struct s_list_d
 {
 	void			*content;
-	int				pos_origin;
-	int				pos_sorted;
 	struct s_list_d	*prev;
 	struct s_list_d	*next;
 }	t_list_d;
