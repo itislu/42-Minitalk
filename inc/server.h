@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 16:44:50 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:55:11 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,22 @@ extern volatile char	*g_msg[];
 void	handle_signal(int signo, siginfo_t *info, void *context);
 
 /* Server utils */
+char	*calloc_msg(size_t len);
+void	client_not_reachable(pid_t client, int stage[]);
 void	free_all_and_exit(int exit_code);
-pid_t	print_pid(void);
 void	set_bit(volatile char *byte, int signo);
 
 /* 01 Handshake stage */
-void	handshake(int signo, pid_t pid_client, int stage[]);
+void	handshake(int signo, pid_t client, int stage[]);
 
-/* 02 Transmit len stage */
-int		get_len(size_t *len, int signo, pid_t pid_client);
+/* 02 Len transmission stage */
+int		get_len(size_t *len, int signo, pid_t client);
 int		get_lentype(int signo);
 
-/* 03 Transmit msg stage */
-int		buffer_msg(size_t *len, int signo, pid_t pid_client);
+/* 03 Msg transmission stage */
+int		buffer_msg(size_t *len, int signo, pid_t client);
 
 /* 04 Display msg stage */
-void	display_msg(volatile char **msg);
+void	display_msg(pid_t client);
 
 #endif
