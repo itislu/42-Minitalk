@@ -35,13 +35,12 @@ int	main(int argc, char *argv[])
 		exit (ARG_ERROR);
 	}
 	setup_sigaction(SIG_SERVER_READY, send_msg);
-	// Might need sth like this:
-	// lensize = send_lentype(len, pid_server);
-
 	wait_for_server(len, DISPLAY_MSG_STAGE);
+	sleep(TIMEOUT_SEC);
 	if (g_stage != DISPLAY_MSG_STAGE)
-		timeout(pid_server, TIMEOUT_SEC);
-	exit (SUCCESS);
+		timeout(server, TIMEOUT_SEC);
+	else
+		exit (SUCCESS);
 }
 
 void	wait_for_server(size_t bytes_to_send, int next_stage)
