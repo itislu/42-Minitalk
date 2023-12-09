@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/09 13:55:11 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 15:42:05 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define SERVER_H
 
 # include "minitalk.h"
+
+# define CLIENT info->si_pid
 
 extern volatile char	*g_msg[];
 
