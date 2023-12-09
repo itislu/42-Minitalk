@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 23:04:57 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 15:48:51 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:41:57 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	handshake(int signo, pid_t pid_client, int stage[])
 {
 	if (signo == SIG_HANDSHAKE)
 	{
-		stage[pid_client] = COMM_LEN_STAGE;
+		stage[pid_client] = TRANSMIT_LEN_STAGE;
 		if (kill(pid_client, SIG_HANDSHAKE) == -1)
 			exit (KILL_ERROR);
 	}

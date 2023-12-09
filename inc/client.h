@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 14:52:17 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:46:18 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ void	parse_input(int argc, char *argv[], char **msg, pid_t *pid_server);
 int		check_input(int argc, char *argv[]);
 bool	is_valid_pid(char *arg);
 
-/* 01 Handshake */
+/* 01 Handshake stage */
 void	handshake(pid_t pid_server);
 void	handle_handshake(int signo, siginfo_t *info, void *context);
 
-/* 02 Communicate len */
+/* 02 Transmit len stage */
 size_t	communicate_len(pid_t pid_server, char *msg);
 int		send_lentype(size_t len, pid_t pid_server);
 void	send_len(int signo, siginfo_t *info, void *context);
 
-/* 03 Send msg */
+/* 03 Transmit msg stage */
 void	send_msg(int signo, siginfo_t *info, void *context);
 
 #endif

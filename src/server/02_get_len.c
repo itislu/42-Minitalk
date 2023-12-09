@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 11:47:01 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 15:48:52 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:41:57 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	get_len(size_t *len, int signo, pid_t pid_client)
 		else
 			mask[pid_client] <<= 1;
 	}
-	return (COMM_LEN_STAGE);
+	return (TRANSMIT_LEN_STAGE);
 }
 
 int	get_lentype(int signo)

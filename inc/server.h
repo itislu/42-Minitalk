@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 15:19:29 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:44:50 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	set_bit(volatile char *byte, int signo);
 /* 01 Handshake stage */
 void	handshake(int signo, pid_t pid_client, int stage[]);
 
-/* 02 Get len stage */
+/* 02 Transmit len stage */
 int		get_len(size_t *len, int signo, pid_t pid_client);
 int		get_lentype(int signo);
 
-/* 03 Buffer msg stage */
+/* 03 Transmit msg stage */
 int		buffer_msg(size_t *len, int signo, pid_t pid_client);
 
 /* 04 Display msg stage */

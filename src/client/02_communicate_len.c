@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:02:53 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 15:47:56 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:08:49 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	communicate_len(pid_t pid_server, char *msg)
 	size_t	len;
 	int		lensize;
 
-	len = ft_strlen(msg);	// What if 0? Mallocing 0 bytes in server is not good.
+	len = ft_strlen(msg);
 	if (len == 0)
 		return (len);
 	save_in_static((void *) len, &send_len);
