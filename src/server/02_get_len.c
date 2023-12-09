@@ -20,7 +20,7 @@ int	get_len(size_t *len, int signo, pid_t pid_client)
 
 	if (!lensize[pid_client])
 	{
-		lensize[pid_client] = get_lentype(signo);
+		lensize[pid_client] = get_lentype(signo) * 8;
 		mask[pid_client] = 0b1;
 		*len = 0;
 	}
