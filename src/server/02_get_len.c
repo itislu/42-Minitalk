@@ -6,44 +6,43 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 11:47:01 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/08 16:41:57 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 15:29:16 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <server.h>
 
-int	get_len(size_t *len, int signo, pid_t pid_client)
+int	get_len(size_t *len, int signo, pid_t client)
 {
 	static int		bit[MAX_PID];
 	static int		lensize[MAX_PID];
 	static size_t	mask[MAX_PID];
 
-	if (!lensize[pid_client])
+	if (!lensize[client])
 	{
-		lensize[pid_client] = get_lentype(signo) * 8;
-		mask[pid_client] = 0b1;
+		lensize[client] = get_lentype(signo) * 8;
+		mask[client] = 0b1;
 		*len = 0;
 	}
 	else
 	{
 		if (signo == SIG_ONE)
-			*len |= mask[pid_client];
-		if (++bit[pid_client] == lensize[pid_client])
+			*len |= mask[client];
+		if (++bit[client] == lensize[client])
 		{
-			bit[pid_client] = 0;
-			lensize[pid_client] = 0;
-			usleep(100);	// Might be needed for client to switch handler to send_msg
-			return (TRANSMIT_MSG_STAGE);
+			usleep(50000);
+			bit[client] = 0;
+			lensize[client] = 0;
+			return (MSG_TRANSMISSION_STAGE);
 		}
-		else
-			mask[pid_client] <<= 1;
+		mask[client] <<= 1;
 	}
-	return (TRANSMIT_LEN_STAGE);
+	return (LEN_TRANSMISSION_STAGE);
 }
 
 int	get_lentype(int signo)
 {
-	if (signo == SIG_INT)
+	if (signo == SIG_UINT)
 		return (sizeof(unsigned int));
 	else
 		return (sizeof(size_t));
