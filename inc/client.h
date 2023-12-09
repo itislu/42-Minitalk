@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 18:17:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/09 15:43:12 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 15:17:51 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "minitalk.h"
 
 # define TIMEOUT_SEC	2
-# define SERVER info->si_pid
 
 enum e_dangerous_pid
 {

@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 02:21:49 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/09 15:44:04 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 13:41:13 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ void	send_msg(int signo, siginfo_t *info, void *context)
 			msg++;
 			bit = 0;
 		}
-		transmit_bit(*msg, &bit, SERVER);
+		transmit_bit(*msg, &bit, info->si_pid);
 	}
 }

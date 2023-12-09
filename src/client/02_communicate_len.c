@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:02:53 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/09 15:44:29 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:52:13 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ void	send_len(int signo, siginfo_t *info, void *context)
 	static int		bit;
 
 	(void) context;
+	(void) info;
 	if (!signo && !len)
 		len = (size_t) context;
 	else if (signo == SIG_SERVER_READY)
-		transmit_bit(len, &bit, SERVER);
+		transmit_bit(len, &bit, info->si_pid);
 }

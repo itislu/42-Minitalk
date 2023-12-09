@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 02:18:54 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/09 15:44:04 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/09 04:30:47 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	msg_received(int signo, siginfo_t *info, void *context)
 {
 	(void) signo;
 	(void) context;
-	ft_printf("Message to server %d successfully transmitted.\n", SERVER);
+	ft_printf("Message to server %d successfully transmitted.\n", info->si_pid);
 	exit(SUCCESS);
 }
 
