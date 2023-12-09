@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 23:06:11 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/09 15:21:17 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/10 00:17:02 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,25 @@ int	check_input(int argc, char *argv[])
 
 bool	is_valid_pid(char *arg, enum e_dangerous_pid *dangerous_pid)
 {
-	long	pid;
+	int	pid;
 
-	if (ft_strisdigits(arg))
+	if (arg && ft_strlen(arg) < 10)
 	{
-		pid = ft_atol(arg);
-		if (pid == 0)
-			*dangerous_pid = ZERO;
-		else if (pid <= MAX_PID)
-			return (true);
-	}
-	else if (arg && arg[0] == '-')
-	{
-		if (ft_strcmp(arg, "-1") == 0)
-			*dangerous_pid = MINUS_ONE;
-		else if (ft_strisdigits(&arg[1]))
-			*dangerous_pid = NEGATIVE;
+		if (ft_strisdigits(arg))
+		{
+			pid = ft_atoi(arg);
+			if (pid == 0)
+				*dangerous_pid = ZERO;
+			else if (pid <= MAX_PID)
+				return (true);
+		}
+		else if (arg[0] == '-')
+		{
+			if (ft_strcmp(arg, "-1") == 0)
+				*dangerous_pid = MINUS_ONE;
+			else if (ft_strisdigits(&arg[1]))
+				*dangerous_pid = NEGATIVE;
+		}
 	}
 	return (false);
 }
