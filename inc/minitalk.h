@@ -13,6 +13,8 @@
 #ifndef MINITALK_H
 # define MINITALK_H
 
+# define _DEFAULT_SOURCE
+
 # include "libft.h"
 # include "ft_printf.h"
 # include <errno.h>
